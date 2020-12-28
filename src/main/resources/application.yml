@@ -1,3 +1,6 @@
+server:
+  # 服务端口，不配置时默认8080
+  port: 8083
 spring:
   application:
     name: springboot-quartz-simple
@@ -23,7 +26,7 @@ spring:
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             # quartz相关表的表名前缀
             tablePrefix: QRTZ_
-            # 是否开启集群部署
+            # 是否开启集群部署，如果true，当部署了多个实例后，每次执行任务会自动被分配到其中一台实例上
             isClustered: true
             # 分布式节点有效性检查时间间隔，单位：毫秒,默认值是15000
             clusterCheckinInterval: 10000
