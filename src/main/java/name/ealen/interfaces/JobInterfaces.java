@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 /**
  * Created by EalenXie on 2019/7/10 16:01.
@@ -33,10 +34,11 @@ public class JobInterfaces {
 
         //创建一个定时任务
         TaskDefine task = TaskDefine.builder()
-                .jobKey(jobKey)
+//                .jobKey(jobKey)
+                .jobKey(JobKey.jobKey("HelloWorld"+ UUID.randomUUID(), "GroupOne"))
                 .cronExpression("0/2 * * * * ? ")   //定时任务 的cron表达式
                 .jobClass(SayHelloJobLogic.class)   //定时任务 的具体执行逻辑
-                .description("这是一个测试的 任务")    //定时任务 的描述
+                .description("这是一个测试的任务")    //定时任务 的描述
                 .build();
 
         quartzJobService.scheduleJob(task);

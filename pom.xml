@@ -40,6 +40,8 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- lombok用于消除冗长的Java代码，比如POJO类中的get、set等 -->
+        <!-- 如果IDE提示报错，说明没有安装对应插件，安装后就不会提示错误了，即便不安装插件也能正常运行 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

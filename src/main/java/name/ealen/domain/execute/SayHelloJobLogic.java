@@ -20,7 +20,7 @@ public class SayHelloJobLogic implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         //写你自己的逻辑
-        log.info("SayHelloJob.execute , hello world  ! ");
+        log.info("SayHelloJob.execute , hello world ! {}",jobExecutionContext.getJobDetail());
 
     }
 }

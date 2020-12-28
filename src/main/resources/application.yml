@@ -2,33 +2,51 @@ spring:
   application:
     name: springboot-quartz-simple
   datasource:
-    url: jdbc:mysql://localhost:3306/yourdatabase?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=true
-    username: yourname
-    password: yourpass
+    url: jdbc:mysql://localhost:3306/quartz?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   quartz:
-    # quartz 相关属性配置
+    # quartz 相关属性配置，如果quartz要使用特定的数据源而不是spring.datasource，可以配置org.quartz.dataSource相关属性
     properties:
       org:
         quartz:
           scheduler:
+            # 实例名，在集群中所有实例的实例名需要一样
             instanceName: clusteredScheduler
+            # 调度器实例编号自动生成，每个实例不能相同
             instanceId: AUTO
           jobStore:
+            # 数据库方式 JobStore配置
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            # quartz相关表的表名前缀
             tablePrefix: QRTZ_
+            # 是否开启集群部署
             isClustered: true
+            # 分布式节点有效性检查时间间隔，单位：毫秒,默认值是15000
             clusterCheckinInterval: 10000
+            # 容许的最大作业延长时间,最大能忍受的触发超时时间，如果超过则认为"失误",无论是在内存中还是数据中都要配置
+            misfireThreshold: 12000
+            # 对于 Quartz 自带的配置，即可以使用 quartz 自己的 quartz.properties 配置文件进行配置，也可以直接配置在 properties 属性下，它是一个 map
             useProperties: false
           threadPool:
+            # 实例化ThreadPool时，使用的线程类为SimpleThreadPool（一般使用SimpleThreadPool即可满足几乎所有用户的需求）
             class: org.quartz.simpl.SimpleThreadPool
+            # 并发个数,指定线程数，至少为1（无默认值）
             threadCount: 10
+            # 设置线程的优先级（最大为java.lang.Thread.MAX_PRIORITY 10，最小为Thread.MIN_PRIORITY 1，默认为5）
             threadPriority: 5
+            # 线程继承初始化线程的上下文类加载器
             threadsInheritContextClassLoaderOfInitializingThread: true
-    #数据库方式
+    # 数据持久化方式，可选值：MEMORY、JDBC
     job-store-type: jdbc
+#    auto-startup: true   #初始化后是否自动启动计划程序,默认为  true
+#    overwrite-existing-jobs: true #配置的作业是否应覆盖现有的作业定义
+#    scheduler-name: CmiipScheduler # 计划程序的名称
+#    startup-delay: 10s #初始化完成后启动计划程序的延迟时间，默认为 0 秒
+#    wait-for-jobs-to-complete-on-shutdown: false # 关闭时是否等待正在运行的作业完成
 
   jpa:
     open-in-view: false
